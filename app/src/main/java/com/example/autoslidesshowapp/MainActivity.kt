@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         setContentView(R.layout.activity_main)
 
         var resolver = contentResolver
-        var cursor = resolver.query(
+        cursor = resolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI, // データの種類
             null, // 項目(null = 全項目)
             null, // フィルタ条件(null = フィルタなし)
@@ -100,49 +100,53 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     public fun getContentsInfo() {
-        var resolver = contentResolver
 
         if (flag == 0) {
-            if (cursor.moveToFirst()) {
+            if (cursor!!.moveToFirst()) {
                 // indexからIDを取得し、そのIDから画像のURIを取得する
-                val fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID)
-                val id = cursor.getLong(fieldIndex)
+                val fieldIndex = cursor!!.getColumnIndex(MediaStore.Images.Media._ID)
+                val id = cursor!!.getLong(fieldIndex)
                 val imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
 
                 imageView.setImageURI(imageUri)
             }
         } else if (flag == 3) {
             Log.d("messeage", "next")
-            if (cursor.moveToNext()) {
+            if (cursor!!.moveToNext()) {
                 Log.d("messeage", "true")
-                cursor.moveToNext()
+                cursor!!.moveToNext()
             } else {
                 Log.d("messeage", "false")
-                cursor.moveToFirst()
+                cursor!!.moveToFirst()
             }
-            val fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID)
-            val id = cursor.getLong(fieldIndex)
+            val fieldIndex = cursor!!.getColumnIndex(MediaStore.Images.Media._ID)
+            val id = cursor!!.getLong(fieldIndex)
             val imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
 
             imageView.setImageURI(imageUri)
 
         } else if (flag == 4) {
             Log.d("messeage", "buck")
-            if (cursor.moveToPrevious()) {
+            if (cursor!!.moveToPrevious()) {
                 Log.d("messeage", "true")
-                cursor.moveToPrevious()
+                cursor!!.moveToPrevious()
             } else {
                 Log.d("messeage", "false")
-                cursor.moveToLast()
+                cursor!!.moveToLast()
             }
-            val fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID)
-            val id = cursor.getLong(fieldIndex)
+            val fieldIndex = cursor!!.getColumnIndex(MediaStore.Images.Media._ID)
+            val id = cursor!!.getLong(fieldIndex)
             val imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
 
             imageView.setImageURI(imageUri)
         }
 
-        cursor.close()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        cursor!!.close()
     }
 
 }
