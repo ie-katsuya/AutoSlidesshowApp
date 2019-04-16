@@ -28,15 +28,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="Start"
-            android:id="@+id/start"
-            android:layout_toLeftOf="@+id/next"/>
+            android:text="Stop"
+            android:id="@+id/stop"/>
 
     <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:text="Stop"
-            android:id="@+id/stop"
-            android:layout_toRightOf="@+id/buck"/>
+            android:layout_centerHorizontal="true"
+            android:text="Start"
+            android:id="@+id/start"/>
 
 </RelativeLayout>
