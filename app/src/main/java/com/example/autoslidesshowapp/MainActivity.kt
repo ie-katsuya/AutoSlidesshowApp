@@ -11,19 +11,28 @@ import android.content.ContentUris
 import android.database.Cursor
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.View
+import java.util.*
+import android.os.Handler
+import android.widget.Button
 
 class MainActivity : AppCompatActivity(),View.OnClickListener {
 
     private val PERMISSIONS_REQUEST_CODE = 100
     var flag = 0
-    var onoff = 0
-
+    var onoff = 1
 
     var cursor: Cursor? = null
+
+    var mTimer: Timer? = null
+
+    // タイマー用の時間のための変数
+    var mTimerSec = 0.0
+    var mHandler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         var resolver = contentResolver
         cursor = resolver.query(
@@ -58,33 +67,52 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
 
     override fun onClick(v: View?) {
 
-        if (v!!.id == R.id.start) {
-            start.setOnClickListener {
-                if (onoff == 0) {
-                    onoff = 1
-                }
+        if (v!!.id == R.id.start) { //再生ボタンON
+            onoff = 0
+                    Log.d("messeage", "再生ボタンON 1")
+            if (mTimer == null) {
+                Log.d("messeage", "再生ボタンON 2")
+                // タイマーの作成
+                mTimer = Timer()
+                // タイマーの始動
+                mTimer!!.schedule(object : TimerTask() {
+                    override fun run() {
+                        flag = 3
+                        mTimerSec += 0.1
+                        if (mTimerSec >= 2.0) {
+                            Log.d("messeage", "2秒たちました")
+                            mHandler.post {
+                                getContentsInfo()
+                            }
+                            mTimerSec = 0.0
+                        }
+
+                    }
+                }, 100, 100) // 最初に始動させるまで 100ミリ秒、ループの間隔を 100ミリ秒 に設定
+
             }
-        }else if(v!!.id == R.id.stop) {
-            stop.setOnClickListener {
-                if (onoff == 1) {
-                    onoff = 0
-                }
+
+        }else if(v!!.id == R.id.stop) { //停止ボタンON
+            onoff = 1
+            if (mTimer != null) {
+                Log.d("messeage", "停止ボタンON")
+                mTimer!!.cancel()
+                mTimer = null
+                mTimerSec = 0.0
+
             }
-        }else if(v!!.id == R.id.next) {
+        }else if(v!!.id == R.id.next) { //進むボタン
             //停止している時だけ選択可能
-            if (onoff == 0) {
-                next.setOnClickListener {
-                    flag = 3
-                    getContentsInfo()
-                }
+            if (onoff == 1) {
+                flag = 3
+                getContentsInfo()
+
             }
-        }else if(v!!.id == R.id.buck){
+        }else if(v!!.id == R.id.buck){ //戻るボタン
             //停止している時だけ選択可能
-            if (onoff == 0) {
-                buck.setOnClickListener {
-                    flag = 4
-                    getContentsInfo()
-                }
+            if (onoff == 1) {
+                flag = 4
+                getContentsInfo()
             }
         }
     }
