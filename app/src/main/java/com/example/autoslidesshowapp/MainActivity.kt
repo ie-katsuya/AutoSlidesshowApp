@@ -38,6 +38,15 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
             // パーミッションの許可状態を確認する
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 // 許可されている
+                var resolver = contentResolver
+                cursor = resolver.query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, // データの種類
+                    null, // 項目(null = 全項目)
+                    null, // フィルタ条件(null = フィルタなし)
+                    null, // フィルタ用パラメータ
+                    null // ソート (null ソートなし)
+                )
+
                 getContentsInfo()
             } else {
                 // 許可されていないので許可ダイアログを表示する
@@ -45,17 +54,17 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
             }
             // Android 5系以下の場合
         } else {
+            var resolver = contentResolver
+            cursor = resolver.query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, // データの種類
+                null, // 項目(null = 全項目)
+                null, // フィルタ条件(null = フィルタなし)
+                null, // フィルタ用パラメータ
+                null // ソート (null ソートなし)
+            )
+
             getContentsInfo()
         }
-        
-        var resolver = contentResolver
-        cursor = resolver.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, // データの種類
-            null, // 項目(null = 全項目)
-            null, // フィルタ条件(null = フィルタなし)
-            null, // フィルタ用パラメータ
-            null // ソート (null ソートなし)
-        )
 
         start.setOnClickListener(this)
         stop.setOnClickListener(this)
