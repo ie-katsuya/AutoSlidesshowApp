@@ -138,6 +138,20 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         when (requestCode) {
             PERMISSIONS_REQUEST_CODE ->
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    var resolver = contentResolver
+                    cursor = resolver.query(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, // データの種類
+                        null, // 項目(null = 全項目)
+                        null, // フィルタ条件(null = フィルタなし)
+                        null, // フィルタ用パラメータ
+                        null // ソート (null ソートなし)
+                    )
+
+                    start.setOnClickListener(this)
+                    stop.setOnClickListener(this)
+                    next.setOnClickListener(this)
+                    buck.setOnClickListener(this)
+
                     getContentsInfo()
                 }
         }
