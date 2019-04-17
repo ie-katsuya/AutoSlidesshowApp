@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
                     null // ソート (null ソートなし)
                 )
                 start.setOnClickListener(this)
-                stop.setOnClickListener(this)
+                //stop.setOnClickListener(this)
                 next.setOnClickListener(this)
                 buck.setOnClickListener(this)
 
@@ -56,10 +56,6 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
             } else {
                 // 許可されていないので許可ダイアログを表示する
                 requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSIONS_REQUEST_CODE)
-                next.setEnabled(false)
-                buck.setEnabled(false)
-                start.setEnabled(false)
-                stop.setEnabled(false)
             }
             // Android 5系以下の場合
         } else {
@@ -74,7 +70,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
             )
 
             start.setOnClickListener(this)
-            stop.setOnClickListener(this)
+            //stop.setOnClickListener(this)
             next.setOnClickListener(this)
             buck.setOnClickListener(this)
 
@@ -85,14 +81,14 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
     override fun onClick(v: View?) {
 
         if (v!!.id == R.id.start) { //再生ボタンON
-            next.setEnabled(false)
-            buck.setEnabled(false)
-            stop.visibility = View.VISIBLE
-            start.visibility = View.INVISIBLE
-
-                    Log.d("messeage", "再生ボタンON 1")
             if (mTimer == null) {
-                Log.d("messeage", "再生ボタンON 2")
+                next.setEnabled(false)
+                buck.setEnabled(false)
+                //stop.visibility = View.VISIBLE
+                //start.visibility = View.INVISIBLE
+                start.text = "stop"
+
+                Log.d("messeage", "再生ボタンON")
                 // タイマーの作成
                 mTimer = Timer()
                 // タイマーの始動
@@ -105,11 +101,22 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
                             getContentsInfo()
                         }
                     }
-                }, 100, 2000) // 最初に始動させるまで 100ミリ秒、ループの間隔を 100ミリ秒 に設定
+                }, 2000, 2000) // 最初に始動させるまで 100ミリ秒、ループの間隔を 100ミリ秒 に設定
 
+            }else{
+                next.setEnabled(true)
+                buck.setEnabled(true)
+                //stop.visibility = View.VISIBLE
+                //start.visibility = View.INVISIBLE
+                start.text = "start"
+
+                Log.d("messeage", "停止ボタンON")
+                mTimer!!.cancel()
+                mTimer = null
+                mTimerSec = 0.0
             }
 
-        }else if(v!!.id == R.id.stop) { //停止ボタンON
+        /*}else if(v!!.id == R.id.stop) { //停止ボタンON
             stop.visibility = View.INVISIBLE
             start.visibility = View.VISIBLE
             if (mTimer != null) {
@@ -120,7 +127,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
 
                 next.setEnabled(true)
                 buck.setEnabled(true)
-            }
+            }*/
         }else if(v!!.id == R.id.next) { //進むボタン
             //停止している時だけ選択可能
             flag = 3
@@ -148,7 +155,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
                     )
 
                     start.setOnClickListener(this)
-                    stop.setOnClickListener(this)
+                    //stop.setOnClickListener(this)
                     next.setOnClickListener(this)
                     buck.setOnClickListener(this)
 
